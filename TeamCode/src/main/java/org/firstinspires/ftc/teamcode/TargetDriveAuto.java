@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.blueprint.ftc.core.AbstractLinearOpMode;
-import org.blueprint.ftc.core.Driver;
+import org.blueprint.ftc.core.controllers.MecanumDriveController;
 import org.blueprint.ftc.core.MotorControllerEx;
 import org.blueprint.ftc.core.controllers.IMUController;
 
@@ -21,7 +21,7 @@ import static org.blueprint.ftc.core.Constants.TURN_SPEED;
 public class TargetDriveAuto extends AbstractLinearOpMode {
 
     private MotorControllerEx motor;
-    private Driver driver;
+    private MecanumDriveController driver;
     private IMUController imu;
 
     public static int DISTANCE_IN_INCHES = 36;

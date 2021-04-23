@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.blueprint.ftc.core.AbstractLinearOpMode;
 import org.blueprint.ftc.core.Constants;
-import org.blueprint.ftc.core.Driver;
+import org.blueprint.ftc.core.controllers.MecanumDriveController;
 import org.blueprint.ftc.core.FoundationSystem;
 import org.blueprint.ftc.core.MotorControllerEx;
 import org.blueprint.ftc.core.controllers.IMUController;
@@ -17,7 +17,7 @@ import org.blueprint.ftc.core.controllers.IMUController;
 public class FoundationTest extends AbstractLinearOpMode {
 
     private MotorControllerEx motor;
-    private Driver driver;
+    private MecanumDriveController driver;
     private IMUController imu;
     private FoundationSystem foundationSystem;
 

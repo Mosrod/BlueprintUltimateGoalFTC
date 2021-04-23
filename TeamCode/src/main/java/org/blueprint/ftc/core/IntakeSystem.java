@@ -7,63 +7,23 @@ import org.blueprint.ftc.core.controllers.CRServoController;
 
 public class IntakeSystem {
 
-    private DcMotor leftMotor;
-    private DcMotor rightMotor;
-
-    private CRServoController leftServo;
-    private CRServoController rightServo;
-    private boolean servosDown;
-
+    private DcMotor intakeMotor;
 
     private boolean isOn;  // on, off switch
     private double intakePower;
 
     public IntakeSystem(HardwareMap hardwareMap) {
         this.initDCMotors(hardwareMap);
-        this.initCRServos(hardwareMap);
     }
 
     private void initDCMotors(HardwareMap hardwareMap) {
-        this.leftMotor = hardwareMap.dcMotor.get(Constants.INTAKE_LEFT_MOTOR);
-        this.leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.leftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        this.rightMotor = hardwareMap.dcMotor.get(Constants.INTAKE_RIGHT_MOTOR);
-        this.rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        this.rightMotor.setDirection(DcMotor.Direction.REVERSE);
-        this.rightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
-    private void initCRServos(HardwareMap hardwareMap) {
-        //  Setup short arm servo;
-        this.leftServo = new CRServoController(hardwareMap, Constants.INTAKE_LEFT_SERVO, Constants.INTAKE_LEFT_SERVO_REVERSE);
-        this.rightServo = new CRServoController(hardwareMap, Constants.INTAKE_RIGHT_SERVO, Constants.INTAKE_RIGHT_SERVO_REVERSE);
-
-        //  this.setIntakeServosInitPosition();
-    }
-
-    public void setIntakeServosInitPosition() {
-        if (!this.servosDown) {
-            this.leftServo.setPower(Constants.INTAKE_LEFT_SERVO_INIT_POWER);
-            this.rightServo.setPower(Constants.INTAKE_RIGHT_SERVO_INIT_POWER);
-
-            this.servosDown = true;
-        }
-    }
-
-    public void setIntakeServosPower(double power) {
-        this.leftServo.setPower(power);
-        this.rightServo.setPower(power);
-    }
-
-    public void resetIntakeServos() {
-        this.setIntakeServosPower(0.0);
-        this.servosDown = false;
+        this.intakeMotor = hardwareMap.dcMotor.get(Constants.INTAKE_MOTOR);
+        this.intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        this.intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void setDCMotorsPower(double power) {
-        this.leftMotor.setPower(power);
-        this.rightMotor.setPower(power);
+        this.intakeMotor.setPower(power);
     }
 
     public void stopDCMotors() {
@@ -76,25 +36,6 @@ public class IntakeSystem {
 
     public void stop() {
         this.stopDCMotors();
-        //  this.resetIntakeServos();
     }
 
-    //  Game mode w/ Switch and right, left bumper
-    public void autoMode(boolean leftBumper, boolean rightBumper, boolean isOff) {
-        if (leftBumper) {
-            this.intakePower = -0.70;
-            this.isOn = true;
-        } else if (rightBumper) {
-            this.intakePower = 0.70;
-            this.isOn = true;
-        } else if (isOff) {
-            this.intakePower = 0.0;
-            this.isOn = false;
-            this.stop();
-        }
-
-        if (this.isOn) {
-            this.setDCMotorsPower(this.intakePower);
-        }
-    }
 }

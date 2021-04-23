@@ -17,9 +17,8 @@ public final class Constants {
     public static final String STONE_ARM = "stone_arm" ;
     public static final String STONE_GRIPPER = "stone_gripper" ;
 
-    // Left and right motors for intake system
-    public static final String INTAKE_LEFT_MOTOR = "intake_left_motor";
-    public static final String INTAKE_RIGHT_MOTOR = "intake_right_motor";
+    // motor names for  intake system
+    public static final String INTAKE_MOTOR = "intake_motor";
 
     //  IntakeSystem params/
     public static final String INTAKE_LEFT_SERVO = "intake_left_servo";

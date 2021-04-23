@@ -2,6 +2,7 @@ package org.blueprint.ftc.core;
 
 import com.qualcomm.robotcore.util.Range;
 
+import org.blueprint.ftc.core.controllers.MecanumDriveController;
 import org.blueprint.ftc.core.controllers.IMUController;
 
 //  left_stick_y:  -1.0 to 1.0 float;
@@ -11,12 +12,12 @@ import org.blueprint.ftc.core.controllers.IMUController;
 //  Drive using GamePadTele ;
 public class GamepadDriver {
 
-    private Driver driver;
+    private MecanumDriveController driver;
     private IMUController imu;
 
     private boolean goReverse = false;
 
-    public GamepadDriver(Driver driver, IMUController imu) {
+    public GamepadDriver(MecanumDriveController driver, IMUController imu) {
         this.imu = imu;
         this.driver = driver;
         this.driver.setRunWithEncoderOffMode();

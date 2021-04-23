@@ -4,14 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.blueprint.ftc.core.Constants;
-import org.blueprint.ftc.core.Driver;
+import org.blueprint.ftc.core.controllers.MecanumDriveController;
 import org.blueprint.ftc.core.FoundationSystem;
 
 //  ONly foundation tasks;
 @Autonomous(name = "FoundationOnly", group = "Auto")
 public class SkystoneAutonomousFoundation extends BaseAutonomous {
 
-    private Driver driver;
+    private MecanumDriveController driver;
     private FoundationSystem foundationSystem;
 
     private float mmPerInch;

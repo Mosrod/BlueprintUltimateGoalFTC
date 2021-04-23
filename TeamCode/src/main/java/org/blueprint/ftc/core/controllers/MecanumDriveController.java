@@ -1,14 +1,16 @@
-package org.blueprint.ftc.core;
+package org.blueprint.ftc.core.controllers;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.blueprint.ftc.core.Constants;
+
 /**
  * Robot driver;  Always uses encoder mode.  PIDF must be reset if weight changes;  See MaxVelocityTest
  * RUN_USING_ENCODER:  Velocity in ticks per second of motor;  use setVelocity;  Need to determine with Load;
  */
-public final class Driver {
+public final class MecanumDriveController {
 
     private DcMotorEx leftFrontMotor;
     private DcMotorEx rightFrontMotor;
@@ -19,7 +21,7 @@ public final class Driver {
      * Configure with motor names in Constants file.
      * @param hardwareMap
      */
-    public Driver(HardwareMap hardwareMap) {
+    public MecanumDriveController(HardwareMap hardwareMap) {
         this(hardwareMap, Constants.LEFT_FRONT_MOTOR_NAME, Constants.RIGHT_FRONT_MOTOR_NAME, Constants.LEFT_BACK_MOTOR_NAME, Constants.RIGHT_BACK_MOTOR_NAME);
     }
 
@@ -31,7 +33,7 @@ public final class Driver {
      * @param leftBackDeviceName
      * @param rightBackDeviceName
      */
-    public Driver(HardwareMap hardwareMap, String leftFrontDeviceName, String rightFrontDeviceName, String leftBackDeviceName, String rightBackDeviceName) {
+    public MecanumDriveController(HardwareMap hardwareMap, String leftFrontDeviceName, String rightFrontDeviceName, String leftBackDeviceName, String rightBackDeviceName) {
         this.setLeftMotor(hardwareMap, leftFrontDeviceName, leftBackDeviceName);
         this.setRightMotor(hardwareMap, rightFrontDeviceName, rightBackDeviceName);
 

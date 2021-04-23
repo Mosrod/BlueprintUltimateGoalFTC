@@ -6,7 +6,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.blueprint.ftc.core.Constants;
-import org.blueprint.ftc.core.Driver;
+import org.blueprint.ftc.core.controllers.MecanumDriveController;
 import org.blueprint.ftc.core.FoundationSystem;
 import org.blueprint.ftc.core.IntakeSystem;
 import org.blueprint.ftc.core.SkystoneDetector;
@@ -27,7 +27,7 @@ public class SkystoneDetectionTele extends BaseAutonomous {
     private StoneSystem stoneSystem;
     private FoundationSystem foundationSystem;
     private ColorSensorController colorSensor;
-    private Driver driver;
+    private MecanumDriveController driver;
 
 
     private boolean isBlue;
@@ -102,7 +102,7 @@ public class SkystoneDetectionTele extends BaseAutonomous {
         this.waitToPressStart();
 
         //  Intake system too high, also can't be down before start of match or in Init.  Refs don't like this.
-        this.intakeSystem.setIntakeServosInitPosition();
+//        this.intakeSystem.setIntakeServosInitPosition();
 
         //  Force value
         if (opModeIsActive()) {

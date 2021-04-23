@@ -3,6 +3,7 @@ package org.blueprint.ftc.core;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.blueprint.ftc.core.controllers.MecanumDriveController;
 import org.blueprint.ftc.core.controllers.IMUController;
 
 public abstract class AbstractLinearOpMode extends LinearOpMode {
@@ -34,7 +35,7 @@ public abstract class AbstractLinearOpMode extends LinearOpMode {
      * @param velocity
      */
     protected void drive(double velocity) {
-        Driver driver = this.rosie.getDriver();
+        MecanumDriveController driver = this.rosie.getDriver();
         driver.setStopAndResetMode();
         driver.setRunWithEncoderMode();
         driver.setDriveVelocityPID();
@@ -47,7 +48,7 @@ public abstract class AbstractLinearOpMode extends LinearOpMode {
      */
     protected void strafe(double velocity) {
         //  positive velocity strafe left; negative strafe right
-        Driver driver = this.rosie.getDriver();
+        MecanumDriveController driver = this.rosie.getDriver();
         driver.setStopAndResetMode();
         driver.setRunWithEncoderMode();
         driver.setDriveVelocityPID();
@@ -140,7 +141,7 @@ public abstract class AbstractLinearOpMode extends LinearOpMode {
      * @param distanceInInches
      */
     protected void driveToTarget(double distanceInInches) {
-        Driver driver = this.rosie.getDriver();
+        MecanumDriveController driver = this.rosie.getDriver();
         driver.setTargetPosition(distanceInInches);
 
         //  When using Run-to-position, set max velocity;
@@ -154,7 +155,7 @@ public abstract class AbstractLinearOpMode extends LinearOpMode {
     }
 
     protected void driveToTargetWithoutEncoder(double distanceInInches, int speed) {
-        Driver driver = this.rosie.getDriver();
+        MecanumDriveController driver = this.rosie.getDriver();
         int ticks = (int)(driver.calculateTicks(distanceInInches));
 
         this.drive(speed);
@@ -171,7 +172,7 @@ public abstract class AbstractLinearOpMode extends LinearOpMode {
      * @param velocity
      */
     protected void strafeToTarget(double distanceInInches, double velocity) {
-        Driver driver = this.rosie.getDriver();
+        MecanumDriveController driver = this.rosie.getDriver();
 
         int ticks = (int)(driver.calculateTicks(distanceInInches) * Constants.STRAFE_DISTANCE_FACTOR);
 
@@ -201,7 +202,7 @@ public abstract class AbstractLinearOpMode extends LinearOpMode {
     protected void turn(double degrees, double velocity) {
 
         double power = velocityToPower(velocity);
-        Driver driver = this.rosie.getDriver();
+        MecanumDriveController driver = this.rosie.getDriver();
         MotorControllerEx motor = this.rosie.getMotorPID();
         IMUController imu = this.rosie.getIMUController();
         imu.resetAngle();

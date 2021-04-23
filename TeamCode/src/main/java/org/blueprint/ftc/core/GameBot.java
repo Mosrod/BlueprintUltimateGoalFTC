@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.blueprint.ftc.core.controllers.ColorSensorController;
+import org.blueprint.ftc.core.controllers.MecanumDriveController;
 import org.blueprint.ftc.core.controllers.IMUController;
 
 /**
@@ -16,9 +17,11 @@ public class GameBot {
 
     private ColorSensorController colorSensor;
     private IMUController imu;
-    private Driver driver;
+    private MecanumDriveController driver;
 
     private GamepadDriver gamepadDriver;
+
+    private IntakeSystem intakeSystem;
 //    private SkystoneDetector skystonDetector;
 //    private IntakeSystem intakeSystem;
 //    private LiftSystem liftSystem;
@@ -41,10 +44,12 @@ public class GameBot {
         this.imu = new IMUController(hardwareMap);
 
         //  Build driver ;
-        this.driver = new Driver(hardwareMap);
+        this.driver = new MecanumDriveController(hardwareMap);
 
         //  Drive using gamepad ;
         this.gamepadDriver = new GamepadDriver(this.driver, this.imu);
+
+        this.intakeSystem = new IntakeSystem(hardwareMap);
 
 //        this.colorSensor = new ColorSensorController(hardwareMap);
 //        this.colorSensor.ledOn();
@@ -75,10 +80,11 @@ public class GameBot {
         return this.imu;
     }
 
-    public Driver getDriver() {
+    public MecanumDriveController getDriver() {
         return this.driver;
     }
 
+    public IntakeSystem getIntakeSystem() { return this.intakeSystem; }
 //    public SkystoneDetector getSkystoneDetector() {
 //        //  Skystone detector, activate when ready ;
 //        return this.skystonDetector;

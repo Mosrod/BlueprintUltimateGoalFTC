@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.blueprint.ftc.core.AbstractLinearOpMode;
 import org.blueprint.ftc.core.Constants;
-import org.blueprint.ftc.core.Driver;
+import org.blueprint.ftc.core.controllers.MecanumDriveController;
 import org.blueprint.ftc.core.SkystoneDetector;
 import org.blueprint.ftc.core.controllers.ColorSensorController;
 
@@ -14,7 +14,7 @@ import org.blueprint.ftc.core.controllers.ColorSensorController;
 @Disabled()
 public class SkystoneAutonomous extends AbstractLinearOpMode {
 
-    private Driver driver;
+    private MecanumDriveController driver;
     private ColorSensorController colorSensor;
     private SkystoneDetector skystoneDetector;
 

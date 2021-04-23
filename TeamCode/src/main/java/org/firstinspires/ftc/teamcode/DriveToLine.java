@@ -5,14 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.blueprint.ftc.core.AbstractLinearOpMode;
 import org.blueprint.ftc.core.Constants;
-import org.blueprint.ftc.core.Driver;
+import org.blueprint.ftc.core.controllers.MecanumDriveController;
 import org.blueprint.ftc.core.controllers.ColorSensorController;
 
 @Autonomous(name = "DriveToLine", group = "Auto")
 @Disabled
 public class DriveToLine extends AbstractLinearOpMode {
 
-    private Driver driver;
+    private MecanumDriveController driver;
     private ColorSensorController colorSensor;
 
     private String zone;
