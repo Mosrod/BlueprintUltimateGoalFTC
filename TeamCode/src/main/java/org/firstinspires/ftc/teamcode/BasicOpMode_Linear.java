@@ -32,9 +32,15 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.CRServoImplEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
+import org.blueprint.ftc.core.Constants;
+import org.blueprint.ftc.core.controllers.ServoController;
 
 
 /**
@@ -55,19 +61,24 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
-    private CRServo vexTest = null;
+//    private DcMotor leftDrive = null;
+//    private DcMotor rightDrive = null;
+//    private Servo wobblGoal = null;
+//    private ServoController servoController = null;
+    private CRServo wobbl = null;
 
     @Override
     public void runOpMode() {
-        telemetry.addData("Status", "Initialized");
+        telemetry.addData("Status", "Initializedd");
         telemetry.update();
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_front_motor");
+//  ss      leftDrive  = hardwareMap.get(DcMotor.class, "left_front_motor");      ss
+        wobbl = hardwareMap.get(CRServo.class, "wobbl_goal_servo");
+//        wobbl = new (hardwareMap, "wobbl_goal_servo");
+
 //        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
 
 //        vexTest = hardwareMap.get(CRServo.class, "vex");
@@ -76,7 +87,7 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
+
 //        rightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Wait for the game to start (driver presses PLAY)
@@ -85,9 +96,14 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+//            wobblGoal.(Servo.Direction.REVERSE);
+//            wobblGoal.
+            wobbl.setDirection(DcMotorSimple.Direction.FORWARD);
+            wobbl.setPower(1);
+//            wobblGoal.setPosition(1);
 
             // Setup a variable for each drive wheel to save power level for telemetry
-            double leftPower;
+//            double leftPower;
 //            double rightPower;
 
             // Choose to drive using either Tank Mode, or POV Mode
@@ -95,9 +111,9 @@ public class BasicOpMode_Linear extends LinearOpMode {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
-            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+//            double drive = -gamepad1.left_stick_y;
+//            double turn  =  gamepad1.right_stick_x;
+//            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
 //            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
             // Tank Mode uses one stick to control each wheel.
@@ -106,7 +122,23 @@ public class BasicOpMode_Linear extends LinearOpMode {
             // rightPower = -gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
-            leftDrive.setPower(1);
+
+//            if (gamepad1.x) {
+//                wobblGoal.setDirection(Servo.Direction.REVERSE);
+//                wobblGoal.setPosition(1);
+//                telemetry.addData("Status", "Running");
+//            }
+//
+//            if (gamepad1.b) {
+//                wobblGoal.setDirection(Servo.Direction.REVERSE);
+//                wobblGoal.setPosition(0);
+//                telemetry.addData("Status", "Running");
+//            }
+
+//            if (gamepad1.a) {
+//                wobblGoal.setPower(0);
+//            }
+//            wobblGoal.setPower(1);
 //            rightDrive.setPower(1);
 //
 //            vexTest.setPower(1);

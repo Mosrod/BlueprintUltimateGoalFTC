@@ -37,7 +37,7 @@ import org.blueprint.ftc.core.controllers.IMUController;
  * https://stemrobotics.cs.pdx.edu/node/5184
  */
 
-@TeleOp(name = "SkystoneTele")
+@TeleOp(name = "CyclopentaneTele")
 //  @Disabled
 public class CyclopentaneTeleOp extends AbstractLinearOpMode {
 
@@ -77,7 +77,7 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
         this.gpd.putInReverse(gamepad1.b);
         this.gpd.putInDrive(gamepad1.x);
 
-        this.intake.setDCMotorsPower(1);
+        this.intake.setDCMotorsPower(0.5);
     }
 
     @Override
@@ -136,9 +136,6 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
             if (gamepad1.b) {
                 this.intake.stop();
             }
-
-
-
 
             telemetry.update();
         }
