@@ -22,9 +22,11 @@ public class GameBot {
     private GamepadDriver gamepadDriver;
 
     private IntakeSystem intakeSystem;
+    private OuttakeSystem outtakeSystem;
+
 //    private SkystoneDetector skystonDetector;
 //    private IntakeSystem intakeSystem;
-//    private LiftSystem liftSystem;
+    private LiftSystem liftSystem;
 //    private FoundationSystem foundationSystem;
 //    private StoneSystem stoneSystem;
 
@@ -51,6 +53,8 @@ public class GameBot {
 
         this.intakeSystem = new IntakeSystem(hardwareMap);
 
+        this.outtakeSystem = new OuttakeSystem(hardwareMap);
+
 //        this.colorSensor = new ColorSensorController(hardwareMap);
 //        this.colorSensor.ledOn();
 //
@@ -58,7 +62,7 @@ public class GameBot {
 //
 //        this.foundationSystem = new FoundationSystem(hardwareMap);
 //
-//        this.liftSystem = new LiftSystem(hardwareMap);
+        this.liftSystem = new LiftSystem(hardwareMap);
 //
 //        this.intakeSystem = new IntakeSystem(hardwareMap);
 //
@@ -85,7 +89,12 @@ public class GameBot {
     }
 
     public IntakeSystem getIntakeSystem() { return this.intakeSystem; }
-//    public SkystoneDetector getSkystoneDetector() {
+
+    public OuttakeSystem getOuttakeSystem() {
+        return this.outtakeSystem;
+    }
+
+    //    public SkystoneDetector getSkystoneDetector() {
 //        //  Skystone detector, activate when ready ;
 //        return this.skystonDetector;
 //    }
@@ -98,9 +107,9 @@ public class GameBot {
 //        return this.foundationSystem;
 //    }
 
-//    public LiftSystem getLiftSystem() {
-//        return this.liftSystem;
-//    }
+    public LiftSystem getLiftSystem() {
+        return this.liftSystem;
+    }
 //
 //    public IntakeSystem getIntakeSystem() {
 //        return this.intakeSystem;

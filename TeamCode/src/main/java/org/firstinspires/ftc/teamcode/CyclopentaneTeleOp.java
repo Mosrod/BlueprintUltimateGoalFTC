@@ -6,7 +6,13 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.blueprint.ftc.core.AbstractLinearOpMode;
 import org.blueprint.ftc.core.GamepadDriver;
 import org.blueprint.ftc.core.IntakeSystem;
+import org.blueprint.ftc.core.LiftSystem;
+import org.blueprint.ftc.core.OuttakeSystem;
+import org.blueprint.ftc.core.controllers.GamepadButtonController;
 import org.blueprint.ftc.core.controllers.IMUController;
+import org.blueprint.ftc.core.controllers.ServoController;
+
+import java.util.concurrent.Callable;
 
 
 /**
@@ -46,11 +52,25 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
 
 //    private Driver driver;
 //    private FoundationSystem foundationSystem;
-    private IntakeSystem intakeSystem;
+//    private IntakeSystem intakeSystem;
 //    private LiftSstem liftSystem;
     private GamepadDriver gpd;
     private IntakeSystem intake;
-    private boolean intakeToggle;
+    private OuttakeSystem outtake;
+    private LiftSystem liftSystem;
+    private ServoController gripper;
+
+    private boolean intakeToggleChanged;
+    private boolean intakeStatus;
+
+    private boolean outtakeToggleChanged;
+    private boolean outtakeStatus;
+
+    private boolean liftToggleChanged;
+    private boolean liftSystemStatus;
+
+    private boolean gripperToggleChanged;
+    private boolean gripperStatus;
 
     @Override
     public void initOpMode() throws InterruptedException {
@@ -63,9 +83,16 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
         this.imu = this.rosie.getIMUController();
         this.imu.resetAngle();
 
+        this.liftSystem = this.rosie.getLiftSystem();
+        this.liftSystem.setLinearOpMode(this);
+
         this.gpd = this.rosie.getGamepadDriver();
 
         this.intake = this.rosie.getIntakeSystem();
+
+        this.outtake = this.rosie.getOuttakeSystem();
+
+        this.gripper = new ServoController(this.hardwareMap, "gripper");
 
         telemetry.addData("INITIALIZATION DONE. OR IS IT?...","  PRESS PLAY WHEN READY.");
         telemetry.update();
@@ -77,7 +104,7 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
         this.gpd.putInReverse(gamepad1.b);
         this.gpd.putInDrive(gamepad1.x);
 
-        this.intake.setDCMotorsPower(0.5);
+//        this.intake.setDCMotorsPower(0.5);
     }
 
     @Override
@@ -86,7 +113,13 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
         this.stop();
 
         this.stopDriving();
-        this.intakeSystem.stop();
+        this.intake.stop();
+
+        this.outtake.stop();
+
+
+
+        this.liftSystem.reset();
 //        this.foundationSystem.triggerUp(true);
 //        this.liftSystem.moveBackSlide();
     }
@@ -127,15 +160,95 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
 
             this.addGamepadTelemetry();
 
+            // set up Mecanum drive
             this.gpd.drive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
-            if (gamepad1.x) {
-                this.intake.start();
+
+            // Intake System
+            GamepadButtonController intakeSystemButton = new GamepadButtonController(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    return gamepad1.a;
+                }
+            }, new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    intake.start();
+                    return null;
+                }
+            }, new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    intake.stop();
+                    return null;
+                }
+            });
+
+
+            intakeSystemButton.checkForButton();
+//            if (gamepad1.x && !intakeToggleChanged) {
+//                if (intakeStatus) {
+//                    this.intake.stop();
+//                    intakeStatus = false;
+//                } else {
+//                    this.intake.start();
+//                    intakeStatus = true;
+//                }
+//                intakeToggleChanged = true;
+//            }  else if (!gamepad1.x) {
+//                intakeToggleChanged = false;
+//            }
+
+
+            // Outtake System   TODO: Make GamepadButtonController class
+            if (gamepad1.y && !outtakeToggleChanged) {
+                if (outtakeStatus) {
+                    this.outtake.stop();
+                    outtakeStatus = false;
+                } else {
+                    this.outtake.start();
+                    outtakeStatus = true;
+                }
+                outtakeToggleChanged = true;
+            }  else if (!gamepad1.y) {
+                outtakeToggleChanged = false;
             }
 
-            if (gamepad1.b) {
-                this.intake.stop();
+
+            // Lift System   TODO: Make GamepadButtonController class
+            if (gamepad1.a && !liftToggleChanged) {
+                if (intakeStatus) {
+                    this.liftSystem.lift(10);
+                    liftSystemStatus = false;
+                } else {
+                    this.liftSystem.backToBase(true);
+                    liftSystemStatus = true;
+                }
+                liftToggleChanged = true;
+            }  else if (!gamepad1.a) {
+                liftToggleChanged = false;
             }
+
+
+            // Gripper   TODO: Make GamepadButtonController class
+            if (gamepad1.b && !gripperToggleChanged) {
+                if (intakeStatus) {
+                    this.gripper.closeGripper(true);
+                    gripperStatus = false;
+                } else {
+                    this.gripper.openGripper(false);
+                    gripperStatus = true;
+                }
+                gripperToggleChanged = true;
+            }  else if (!gamepad1.b) {
+                gripperToggleChanged = false;
+            }
+
+
+
+
+
+
 
             telemetry.update();
         }
