@@ -35,6 +35,7 @@ public class GamepadButtonController {
                     start.call();
                     isOn = true;
                 }
+                toggleChanged = true;
             } else if (!gamepadButton.call()){
                 toggleChanged = false;
             }

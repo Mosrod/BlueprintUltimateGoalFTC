@@ -15,7 +15,7 @@ public class OuttakeSystem {
     }
 
     private void initDCMotors(HardwareMap hardwareMap) {
-        this.outtakeMotor = hardwareMap.dcMotor.get(Constants.INTAKE_MOTOR);
+        this.outtakeMotor = hardwareMap.dcMotor.get("outtake_motor");
         this.outtakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         this.outtakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }

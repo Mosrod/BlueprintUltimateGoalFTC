@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.blueprint.ftc.core.AbstractLinearOpMode;
 import org.blueprint.ftc.core.GamepadDriver;
@@ -60,17 +61,97 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
     private LiftSystem liftSystem;
     private ServoController gripper;
 
-    private boolean intakeToggleChanged;
-    private boolean intakeStatus;
 
-    private boolean outtakeToggleChanged;
-    private boolean outtakeStatus;
+    // Intake System Gamepad Button Coontroller
+    private GamepadButtonController intakeSystemButton = new GamepadButtonController(new Callable<Boolean>() {
+        @Override
+        public Boolean call() throws Exception {
+            return gamepad1.x;
+        }
+    }, new Callable<Void>() {
+        @Override
+        public Void call() throws Exception {
+            intake.start();
+            return null;
+        }
+    }, new Callable<Void>() {
+        @Override
+        public Void call() throws Exception {
+            intake.stop();
+            return null;
+        }
+    });
 
-    private boolean liftToggleChanged;
-    private boolean liftSystemStatus;
+    // Outtake System Gamepad Button Controller
+    private GamepadButtonController outtakeSystemButton = new GamepadButtonController(new Callable<Boolean>() {
+        @Override
+        public Boolean call() throws Exception {
+            return gamepad1.a;
+        }
+    }, new Callable<Void>() {
+        @Override
+        public Void call() throws Exception {
+            outtake.start();
+            return null;
+        }
+    }, new Callable<Void>() {
+        @Override
+        public Void call() throws Exception {
+            outtake.stop();
+            return null;
+        }
+    });
 
-    private boolean gripperToggleChanged;
-    private boolean gripperStatus;
+    // Lift System Gamepad Button Controller
+    private GamepadButtonController liftSystemButton = new GamepadButtonController(new Callable<Boolean>() {
+        @Override
+        public Boolean call() throws Exception {
+            return gamepad1.b;
+        }
+    }, new Callable<Void>() {
+        @Override
+        public Void call() throws Exception {
+//            liftSystem.lift(7.8);
+//            liftSystem.drive(0.1f);
+
+//            liftSystem.tiltPos(0.57);
+//            liftSystem.lift(2);
+            liftSystem.tiltPos(0.70);
+            liftSystem.lift(8.5);
+            liftSystem.drive(0.1f);
+            liftSystem.tiltPos(0.75);
+            return null;
+        }
+    }, new Callable<Void>() {
+        @Override
+        public Void call() throws Exception {
+//            liftSystem.backToBase(true);
+            liftSystem.lift(2);
+            liftSystem.tiltPos(0.57);
+            liftSystem.lift(0);
+            return null;
+        }
+    });
+
+    // Lift System Gamepad Button Controller
+    private GamepadButtonController gripperButton = new GamepadButtonController(new Callable<Boolean>() {
+        @Override
+        public Boolean call() throws Exception {
+            return gamepad1.b;
+        }
+    }, new Callable<Void>() {
+        @Override
+        public Void call() throws Exception {
+            gripper.openGripper(true);
+            return null;
+        }
+    }, new Callable<Void>() {
+        @Override
+        public Void call() throws Exception {
+            gripper.closeGripper(true);
+            return null;
+        }
+    });
 
     @Override
     public void initOpMode() throws InterruptedException {
@@ -103,8 +184,6 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
         //  Change driving direction
         this.gpd.putInReverse(gamepad1.b);
         this.gpd.putInDrive(gamepad1.x);
-
-//        this.intake.setDCMotorsPower(0.5);
     }
 
     @Override
@@ -128,13 +207,15 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
         telemetry.addData("Gamepad1.LeftStickY", gamepad1.left_stick_y);
         telemetry.addData("Gamepad1.LeftStickX", gamepad1.left_stick_x);
         telemetry.addData("Gamepad1.RightStickX", gamepad1.right_stick_x);
-        //  telemetry.addData("Gamepad1.B", gamepad1.b);
-        //  telemetry.addData("Gamepad1.X", gamepad1.x);
+
+        telemetry.addData("Gamepad Values: ", "see below");
+
+
         //  telemetry.addData("Gamepad1.LeftTrigger", gamepad1.left_trigger);
         //  telemetry.addData("Gamepad1.RightTrigger", gamepad1.right_trigger);
         //  telemetry.addData("Gamepad1.LeftBumper", gamepad1.left_bumper);
         //  telemetry.addData("Gamepad1.RightBumper", gamepad1.right_bumper);
-        //  telemetry.addData("Gamepad1.A", gamepad1.a);
+
         telemetry.addData("Gamepad2.LeftStickY", gamepad2.left_stick_y);
         telemetry.addData("Gamepad2.RightStickY", gamepad2.right_stick_y);
         //  telemetry.addData("Gamepad2.Y", gamepad2.y);
@@ -158,96 +239,17 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
         while (opModeIsActive()) {
 
 
-            this.addGamepadTelemetry();
+//            this.addGamepadTelemetry();
 
             // set up Mecanum drive
             this.gpd.drive(gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
 
-
-            // Intake System
-            GamepadButtonController intakeSystemButton = new GamepadButtonController(new Callable<Boolean>() {
-                @Override
-                public Boolean call() throws Exception {
-                    return gamepad1.a;
-                }
-            }, new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    intake.start();
-                    return null;
-                }
-            }, new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    intake.stop();
-                    return null;
-                }
-            });
-
-
             intakeSystemButton.checkForButton();
-//            if (gamepad1.x && !intakeToggleChanged) {
-//                if (intakeStatus) {
-//                    this.intake.stop();
-//                    intakeStatus = false;
-//                } else {
-//                    this.intake.start();
-//                    intakeStatus = true;
-//                }
-//                intakeToggleChanged = true;
-//            }  else if (!gamepad1.x) {
-//                intakeToggleChanged = false;
-//            }
+            outtakeSystemButton.checkForButton();
+            liftSystemButton.checkForButton();
+            gripperButton.checkForButton();
 
-
-            // Outtake System   TODO: Make GamepadButtonController class
-            if (gamepad1.y && !outtakeToggleChanged) {
-                if (outtakeStatus) {
-                    this.outtake.stop();
-                    outtakeStatus = false;
-                } else {
-                    this.outtake.start();
-                    outtakeStatus = true;
-                }
-                outtakeToggleChanged = true;
-            }  else if (!gamepad1.y) {
-                outtakeToggleChanged = false;
-            }
-
-
-            // Lift System   TODO: Make GamepadButtonController class
-            if (gamepad1.a && !liftToggleChanged) {
-                if (intakeStatus) {
-                    this.liftSystem.lift(10);
-                    liftSystemStatus = false;
-                } else {
-                    this.liftSystem.backToBase(true);
-                    liftSystemStatus = true;
-                }
-                liftToggleChanged = true;
-            }  else if (!gamepad1.a) {
-                liftToggleChanged = false;
-            }
-
-
-            // Gripper   TODO: Make GamepadButtonController class
-            if (gamepad1.b && !gripperToggleChanged) {
-                if (intakeStatus) {
-                    this.gripper.closeGripper(true);
-                    gripperStatus = false;
-                } else {
-                    this.gripper.openGripper(false);
-                    gripperStatus = true;
-                }
-                gripperToggleChanged = true;
-            }  else if (!gamepad1.b) {
-                gripperToggleChanged = false;
-            }
-
-
-
-
-
+//            this.liftSystem.drive(0.1f);
 
 
             telemetry.update();

@@ -10,8 +10,8 @@ public class LiftSystem {
     private LinearOpMode myOpMode;
 
     private SimpleMotor linearSlideMotor;
-    private ServoController linearSlideServo;
-    private ServoController linearArmServo;
+    private ServoController lsTiltServo;
+    private ServoController outtakeArmServo;
 
     private static final double SLIDE_COUNTER_MAX = 50.0;
     private double slideCounter;
@@ -27,10 +27,10 @@ public class LiftSystem {
         this.linearSlideMotor = new SimpleMotor(hardwareMap, Constants.LINEAR_SLIDE_MOTOR_NAME);
 
         //  Servo attached to linear slide system;
-        this.linearSlideServo = new ServoController(hardwareMap, Constants.LINEAR_SLIDE_SERVO);
+        this.lsTiltServo = new ServoController(hardwareMap, "ls_tilt_servo");
 
         //  Servo attached to linear arm system;
-        this.linearArmServo = new ServoController(hardwareMap, Constants.LINEAR_ARM_SERVO);
+        this.outtakeArmServo = new ServoController(hardwareMap, "outtake_arm_servo");
     }
 
     public void setLinearOpMode(LinearOpMode myOpMode) {
@@ -42,12 +42,12 @@ public class LiftSystem {
         return this.linearSlideMotor;
     }
 
-    public ServoController getLinearSlideServo() {
-        return this.linearSlideServo;
+    public ServoController getLsTiltServo() {
+        return this.lsTiltServo;
     }
 
-    public ServoController getLinearArmServo() {
-        return this.linearArmServo;
+    public ServoController getOuttakeArmServo() {
+        return this.outtakeArmServo;
     }
 
     //  Used in tele with Gamepad;
@@ -64,7 +64,7 @@ public class LiftSystem {
         this.linearSlideMotor.drive(yVal);
     }
 
-    public void positionSlideServo(float positionValue) {
+    public void positionTiltServo(float positionValue) {
 
         //  -1 to 1  -->  very sensitive
         //  -1000 to 1000;  Move slide;
@@ -77,7 +77,7 @@ public class LiftSystem {
             }
 
             double slidePos = slideCounter / SLIDE_COUNTER_MAX;
-            this.linearSlideServo.setPosition(slidePos);
+            this.lsTiltServo.setPosition(slidePos);
 
         } else if (inp < 0) {
             slideCounter--;
@@ -86,7 +86,7 @@ public class LiftSystem {
             }
 
             double slidePos = slideCounter / SLIDE_COUNTER_MAX;
-            this.linearSlideServo.setPosition(slidePos);
+            this.lsTiltServo.setPosition(slidePos);
         }
 
     }
@@ -113,12 +113,12 @@ public class LiftSystem {
         return this.getCurrentPosition();
     }
 
-    public int pickup(boolean input) {
+    public int tiltBack(boolean input) {
 
         if (input) {
 
             //  Go back starting position;
-            this.moveForwardSlide();
+            this.moveForwardLsTilt();
             this.lift(0);
             myOpMode.sleep(250);
 
@@ -127,8 +127,8 @@ public class LiftSystem {
 
             //  inches;
             this.lift(startingPoint);  //  POS: 8854;  Don't chnage this.
-            this.moveBackSlide();
-            this.releaseObject();
+            this.moveBackLsTilt();
+            this.releaseRing();
             myOpMode.sleep(750);
 
             //  Double check;
@@ -137,21 +137,21 @@ public class LiftSystem {
             this.lift(10.0);  //  POS:  ~7890;  Don't change this.
             myOpMode.sleep(500);
 
-            this.grabObject();
+            this.pushRing();
             myOpMode.sleep(500);  //  Don't change this.
 
             //  Was 12.0
             this.lift(19.65);    //  POS:  ~9645
             myOpMode.sleep(750);
 
-            this.moveForwardSlide();
+            this.moveForwardLsTilt();
             myOpMode.sleep(500);
 
             //  Back to base;
             this.lift(0);
 
             //  this.moveForwardSlide(0.40);  //  0.35*270 degrees
-            this.moveForwardSlide(0.37);  //  0.35*270 degrees
+//            this.moveForwardLsTilt(0.37);  //  0.35*270 degrees
 
         }
 
@@ -162,24 +162,24 @@ public class LiftSystem {
         return this.linearSlideMotor.getCurrentPosition();
     }
 
-    public void moveBackSlide() {
-        this.linearSlideServo.setPosition(BACKWARD_POS);
+    public void moveBackLsTilt() {
+        this.lsTiltServo.setPosition(BACKWARD_POS);
     }
 
-    public void moveForwardSlide() {
-        this.linearSlideServo.setPosition(FORWARD_POS);
+    public void moveForwardLsTilt() {
+        this.lsTiltServo.setPosition(0.57);
     }
 
-    public void moveForwardSlide(double pos) {
-        this.linearSlideServo.setPosition(pos);
+    public void tiltPos(double pos) {
+        this.lsTiltServo.setPosition(pos);
     }
 
-    public void grabObject() {
-        this.linearArmServo.setPosition(1.0);
+    public void pushRing() {
+        this.outtakeArmServo.setPosition(1.0);
     }
 
-    public void releaseObject() {
-        this.linearArmServo.setPosition(0.0);
+    public void releaseRing() {
+        this.outtakeArmServo.setPosition(0.0);
     }
 
     public void reset() {
