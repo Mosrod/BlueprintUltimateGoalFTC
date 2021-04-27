@@ -170,12 +170,20 @@ public class LiftSystem {
         this.lsTiltServo.setPosition(0.57);
     }
 
+    public void outtakeArmHit() {
+        this.outtakeArmServo.setPosition(1);
+    }
+
+    public void outtakeArmRevoke() {
+        this.outtakeArmServo.setPosition(0);
+    }
+
     public void tiltPos(double pos) {
         this.lsTiltServo.setPosition(pos);
     }
 
     public void pushRing() {
-        this.outtakeArmServo.setPosition(1.0);
+        this.outtakeArmServo.setPosition(0.3);
     }
 
     public void releaseRing() {
@@ -184,6 +192,7 @@ public class LiftSystem {
 
     public void reset() {
         this.linearSlideMotor.stop();
+        this.outtakeArmRevoke();
         this.backToBase(true);
     }
 }

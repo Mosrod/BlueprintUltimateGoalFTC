@@ -116,8 +116,8 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
 
 //            liftSystem.tiltPos(0.57);
 //            liftSystem.lift(2);
-            liftSystem.tiltPos(0.70);
-            liftSystem.lift(8.5);
+            liftSystem.tiltPos(0.72);
+            liftSystem.lift(9);
             liftSystem.drive(0.1f);
             liftSystem.tiltPos(0.75);
             return null;
@@ -126,9 +126,10 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
         @Override
         public Void call() throws Exception {
 //            liftSystem.backToBase(true);
+            liftSystem.drive(0);
             liftSystem.lift(2);
             liftSystem.tiltPos(0.57);
-            liftSystem.lift(0);
+            liftSystem.reset();
             return null;
         }
     });
@@ -137,7 +138,7 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
     private GamepadButtonController gripperButton = new GamepadButtonController(new Callable<Boolean>() {
         @Override
         public Boolean call() throws Exception {
-            return gamepad1.b;
+            return gamepad1.dpad_down;
         }
     }, new Callable<Void>() {
         @Override
@@ -149,6 +150,26 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
         @Override
         public Void call() throws Exception {
             gripper.closeGripper(true);
+            return null;
+        }
+    });
+
+    // Outtake Gamepad Button Controller
+    private GamepadButtonController outtakeArmButton = new GamepadButtonController(new Callable<Boolean>() {
+        @Override
+        public Boolean call() throws Exception {
+            return gamepad1.y;
+        }
+    }, new Callable<Void>() {
+        @Override
+        public Void call() throws Exception {
+            liftSystem.outtakeArmHit();
+            return null;
+        }
+    }, new Callable<Void>() {
+        @Override
+        public Void call() throws Exception {
+            liftSystem.outtakeArmRevoke();
             return null;
         }
     });
@@ -247,7 +268,8 @@ public class CyclopentaneTeleOp extends AbstractLinearOpMode {
             intakeSystemButton.checkForButton();
             outtakeSystemButton.checkForButton();
             liftSystemButton.checkForButton();
-            gripperButton.checkForButton();
+//            gripperButton.checkForButton();
+            outtakeArmButton.checkForButton();
 
 //            this.liftSystem.drive(0.1f);
 
